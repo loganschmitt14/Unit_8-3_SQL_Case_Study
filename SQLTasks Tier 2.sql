@@ -88,11 +88,15 @@ Include in your output the name of the court, and the name of the member
 formatted as a single column. Ensure no duplicate data, and order by
 the member name. */
 
-SELECT DISTINCT CONCAT(Members.firstname, ' ', Members.surname) AS member_name, Facilities.name AS facility_name
+SELECT 
+    DISTINCT CONCAT(Members.firstname, ' ', Members.surname) AS member_name, 
+    Facilities.name AS facility_name
 FROM Members
-JOIN Bookings ON Members.memid = Bookings.memid
-JOIN Facilities ON Bookings.facid = Facilities.facid
-WHERE Facilities.name LIKE 'Tennis%' AND Members.firstname NOT LIKE 'GUEST'
+    JOIN Bookings ON Members.memid = Bookings.memid
+        JOIN Facilities ON Bookings.facid = Facilities.facid
+WHERE 
+    Facilities.name LIKE 'Tennis%' 
+        AND Members.firstname NOT LIKE 'GUEST'
 ORDER BY Members.surname;
 
 /* Q8: Produce a list of bookings on the day of 2012-09-14 which
@@ -111,8 +115,8 @@ WITH cte AS (
             ELSE Bookings.slots * Facilities.membercost 
         END AS cost
     FROM Members
-    JOIN Bookings ON Members.memid = Bookings.memid
-    JOIN Facilities ON Bookings.facid = Facilities.facid
+        JOIN Bookings ON Members.memid = Bookings.memid
+            JOIN Facilities ON Bookings.facid = Facilities.facid
     WHERE Bookings.starttime LIKE '2012-09-14%')
 SELECT *
 FROM cte
@@ -131,8 +135,8 @@ FROM (
             ELSE Bookings.slots * Facilities.membercost 
         END AS cost
     FROM Members
-    JOIN Bookings ON Members.memid = Bookings.memid
-    JOIN Facilities ON Bookings.facid = Facilities.facid
+        JOIN Bookings ON Members.memid = Bookings.memid
+            JOIN Facilities ON Bookings.facid = Facilities.facid
     WHERE Bookings.starttime LIKE '2012-09-14%'
 ) AS subquery
 WHERE cost > 30
